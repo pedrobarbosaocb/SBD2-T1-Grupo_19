@@ -1,12 +1,12 @@
 
 services:
   db:
-    image: postgres
+    image: postgres:17.7-trixie
     restart: always
     shm_size: 128mb
     environment:
       POSTGRES_USER: sbd2
       POSTGRES_PASSWORD: sbd2123
-      POSTGRES_DB: db_sbd
+      POSTGRES_DB: instagram_usage
     ports:
       - "5432:5432"
