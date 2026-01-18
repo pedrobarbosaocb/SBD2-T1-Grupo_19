@@ -2,4 +2,5 @@
 .venv
 data_raw.csv
 .ipynb_checkpoints
-.jupyter_ystore.db
+.jupyter_ystore.
+Untitled.ipynb
