@@ -10,6 +10,7 @@ GROUP BY d.CNT_TME_PRF
 ORDER BY ctr_percentual DESC;
 
 
+
 -- Saber se pessoas com renda "High" clicam mais.
 SELECT 
     u.INC_LVL AS nivel_renda,
@@ -21,6 +22,7 @@ GROUP BY u.INC_LVL
 ORDER BY media_ads_clicados DESC;
 
 
+
 -- Testar a hipótese de clique impulsivo por estresse.
 SELECT 
     e.STR_SCR AS nivel_estresse,
@@ -30,6 +32,8 @@ FROM dw.FT_ADS_PRF f
 JOIN dw.DIM_ETL_VDA e ON f.SRK_ETL_VDA = e.SRK_ETL_VDA
 GROUP BY e.STR_SCR
 ORDER BY e.STR_SCR ASC;
+
+
 
 -- Verificar comportamento baseado no tipo de assinatura.
 SELECT 
@@ -52,6 +56,8 @@ GROUP BY u.CTR_USR, u.GEN_USR
 ORDER BY total_cliques DESC
 LIMIT 10;
 
+
+
 -- Quem passa mais tempo no feed clica mais?
 SELECT 
     CASE 
@@ -68,16 +74,18 @@ ORDER BY media_cliques_ads DESC;
 -- Perfil Etário (Faixas de Idade)
 SELECT 
     CASE 
-        WHEN u.AGE_USR < 25 THEN 'Gen Z (<25)'
-        WHEN u.AGE_USR BETWEEN 25 AND 40 THEN 'Millennials (25-40)'
-        WHEN u.AGE_USR BETWEEN 41 AND 60 THEN 'Gen X (41-60)'
-        ELSE 'Boomers (60+)'
+        WHEN u.AGE_USR < 25 THEN '<25'
+        WHEN u.AGE_USR BETWEEN 25 AND 40 THEN '25-40'
+        WHEN u.AGE_USR BETWEEN 41 AND 60 THEN '41-60'
+        ELSE '60+'
     END AS faixa_etaria,
     AVG(f.ADS_CLK_DIA) AS media_cliques
 FROM dw.FT_ADS_PRF f
 JOIN dw.DIM_USR u ON f.SRK_USR = u.SRK_USR
 GROUP BY 1
 ORDER BY media_cliques DESC;
+
+
 
 -- Comparar o CTR de grupos baseados em felicidade declarada.
 WITH Metricas_Globais AS (
@@ -105,6 +113,8 @@ SELECT
 FROM Metricas_Por_Felicidade h, Metricas_Globais g
 ORDER BY h.nivel_felicidade DESC;
 
+
+
 -- Isolar os top usuários mais engajados e ver se dão lucro
 WITH Top_Engajados AS (
     -- Seleciona os usuários que interagem muito (Likes + Comentários)
@@ -112,7 +122,7 @@ WITH Top_Engajados AS (
         SRK_USR,
         (LIK_GVN_DIA + COM_WRT_DIA) AS total_interacoes
     FROM dw.FT_ENG_APP
-    WHERE (LIK_GVN_DIA + COM_WRT_DIA) > 50 -- Corte para Heavy User
+    WHERE (LIK_GVN_DIA + COM_WRT_DIA) > 300 -- Corte para Heavy User
 ),
 Performance_Ads AS (
     -- Pega os dados de ads apenas desses usuários
