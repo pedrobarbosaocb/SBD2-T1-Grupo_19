@@ -153,5 +153,5 @@ Ranking_Regional AS (
     FROM Performance_Tematica
 )
 SELECT * FROM Ranking_Regional
-WHERE ranking <= 3 -- Top 3 temas por país
+WHERE ranking <= 3 
 ORDER BY pais, ranking;
